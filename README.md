@@ -14,10 +14,10 @@ npm i twinspec
 ---
 # tools/greet.md
 title: Greet
+description: "The GreetTool class greets a user"
 texts:
   welcomeUser: "Welcome {{userName}}"
 ---
-Greet a user
 ```
 
 ```js

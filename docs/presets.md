@@ -1,8 +1,7 @@
 ---
 title: Presets
+description: "Read this before you use or publish a preset"
 ---
-Read this before you use or publish a preset
-
 ## Preset files
 
 ```

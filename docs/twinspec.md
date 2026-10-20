@@ -1,8 +1,7 @@
 ---
 title: Twinspec
+description: "Read this before you write a twin spec"
 ---
-Read this before you write a twin spec
-
 ## Twin files
 
 ```
@@ -66,6 +65,7 @@ texts:
 ---
 $schema: ./audit.schema.json
 title: Audit tool
+description: "The AuditTool class audits the files of a library folder"
 folderLimit: 10
 ---
 ```

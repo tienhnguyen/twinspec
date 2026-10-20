@@ -1,8 +1,7 @@
 ---
 title: Writing
+description: "Read this before you write a text for a person"
 ---
-Read this before you write a text for a person
-
 ## Sentences
 
 | Write | Not |

@@ -60,9 +60,7 @@ export class TwinCli {
   }
 
   static #readDoc (docFile) {
-    const [firstSentence] = TwinSpec.loadSpec(docFile).bodyText.split('\n')
-    if (!firstSentence) throw new Error(TwinCli.#presetSpec.formatText('docSentenceMissing', { filePath: docFile }))
-    return { filePath: relative(process.cwd(), docFile), firstSentence }
+    return { filePath: relative(process.cwd(), docFile), description: TwinSpec.loadSpec(docFile).frontMatter.description }
   }
 
   static #compareDocs (firstDoc, secondDoc) {

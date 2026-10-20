@@ -1,8 +1,7 @@
 ---
 title: JavaScript
+description: "Read this before you write a JavaScript file"
 ---
-Read this before you write a JavaScript file
-
 ## Folders
 
 ```

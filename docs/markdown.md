@@ -1,16 +1,15 @@
 ---
 title: Markdown
+description: "Read this before you write a Markdown file"
 ---
-Read this before you write a Markdown file
-
 ## Files of a project
 
-| File | Content | Reader | Page type | First sentence |
+| File | Content | Reader | Page type | Summary |
 |---|---|---|---|---|
-| `README.md` | The first page of the project | A user of the project | README | The description of the package |
-| `CONTRIBUTING.md` | The rules of this project only | A maintainer of the project | Conceptual | What the file holds |
-| A doc in `docs/` | A set of rules that many projects share | A maintainer of any project | Conceptual | `Read this before you {task}` |
-| A twin spec | The spec of 1 code file | A reader of that code file | Reference | What the thing does |
+| `README.md` | The first page of the project | A user of the project | README | The description of the package after the `#` line |
+| `CONTRIBUTING.md` | The rules of this project only | A maintainer of the project | Conceptual | What the file holds after the `#` line |
+| A doc in `docs/` | A set of rules that many projects share | A maintainer of any project | Conceptual | `description: Read this before you {task}` |
+| A twin spec | The spec of 1 code file | A reader of that code file | Reference | `description` with what the thing does |
 
 - Write each fact in only 1 place
 - Link to the place of a fact instead of a copy
@@ -40,9 +39,8 @@ README.md → CONTRIBUTING.md → docs/*.md → twin specs
 ```md
 ---
 title: {Title}
+description: "{Summary}"
 ---
-{first sentence}
-
 ## {Section}
 ```
 
@@ -50,15 +48,19 @@ title: {Title}
 - [`lib/spec.schema.json`](../lib/spec.schema.json) describes each key of the front matter
 - The `title` of the front matter is the `#` line of the file
 - So the body has no `#` line
+- The `description` of the front matter is the summary of the file
+- So the body has no summary of the file
 - The headings of the body start at `##`
 - `README.md` starts with a `#` line instead of front matter
 - `CONTRIBUTING.md` starts with a `#` line instead of front matter
+- The summary of these 2 files is the line after the `#` line
 
-## First sentence
+## Description
 
-- The first sentence helps a reader see if the file is useful
-- The help of [`TwinCli`](../presets/cli.md) prints the first sentence of each doc
-- So the first sentence of a doc has no backticks
+- The description helps a reader see if the file is useful
+- The help of [`TwinCli`](../presets/cli.md) prints the description of each doc
+- So the description of a doc has no backticks
+- Write the description with the rules of a text in [`twinspec.md`](twinspec.md#texts)
 
 ## Reference page
 
@@ -79,8 +81,8 @@ title: {Title}
 ```
 
 - A reference page has 1 `##` section for each function that a reader calls
-- A twin spec with no function for a reader has only the first sentence
-- For example the twin spec of a test has only the first sentence
+- A twin spec with no function for a reader has no body
+- For example the twin spec of a test has no body
 - Write the 6 sections in this order
 - Write `None` in a section that has nothing
 - Put a code block with each form of the call in `Syntax`
@@ -141,7 +143,7 @@ title: {Title}
 
 - [MDN page types](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types) explain each type of page
 - [MDN method template](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Page_structures/Page_types/API_method_subpage_template) explains the sections of a reference page
-- [MDN writing style guide](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Writing_style_guide) explains the first sentence of a page
+- [Hugo front matter](https://gohugo.io/content-management/front-matter/) explains the key `description` of a front matter
 - [markdownlint MD025](https://github.com/DavidAnson/markdownlint/blob/main/doc/md025.md) treats the `title` of the front matter as the `#` line
 - [EARS](https://alistairmavin.com/ears/) explains the 5 patterns of a rule
 - [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) explains the sections of `README.md`

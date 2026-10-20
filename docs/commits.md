@@ -1,8 +1,7 @@
 ---
 title: Commits
+description: "Read this before you commit"
 ---
-Read this before you commit
-
 ## Message
 
 ```

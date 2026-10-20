@@ -1,5 +1,6 @@
 ---
 title: Twinspec
+description: "The `TwinSpec` class reads the twin spec of a code file"
 texts:
   fileMissing: "The file {{filePath}} is missing"
   callerMissing: "TwinSpec found no caller file in the stack"
@@ -12,8 +13,6 @@ texts:
   schemaInvalid: "The file {{schemaFile}} is not a valid JSON Schema: {{errorText}}"
   textInvalid: "The text {{textId}} of {{filePath}} is not valid Handlebars: {{errorText}}"
 ---
-The `TwinSpec` class reads the twin spec of a code file
-
 ## `TwinSpec.loadSpec()`
 
 ### Syntax
@@ -83,19 +82,21 @@ The function throws an `Error` with 1 of these texts
 ---
 # tools/audit.md
 title: Audit tool
+description: "The AuditTool class audits the files of a library folder"
 texts:
   emptyFolder: "The folder {{folderPath}} is empty"
 ---
-Audit the files of a library folder
+## Steps
 ```
 
 ```js
 // in the class AuditTool of tools/audit.js
 static #toolSpec = TwinSpec.loadSpec()
 
-AuditTool.#toolSpec.frontMatter.title   // 'Audit tool'
-AuditTool.#toolSpec.bodyText            // 'Audit the files of a library folder'
-AuditTool.#toolSpec.filePath            // '/abs/path/tools/audit.md'
+AuditTool.#toolSpec.frontMatter.title         // 'Audit tool'
+AuditTool.#toolSpec.frontMatter.description   // 'The AuditTool class audits the files of a library folder'
+AuditTool.#toolSpec.bodyText                  // '## Steps'
+AuditTool.#toolSpec.filePath                  // '/abs/path/tools/audit.md'
 ```
 
 ## `formatText()`

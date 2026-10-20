@@ -1,10 +1,10 @@
 ---
 title: Command line preset
+description: "The `TwinCli` class fills the texts of the command line of a package"
 texts:
   cliSchemaMissing: "The file {{filePath}} needs $schema: twinspec/cli.schema.json"
   packageMissing: "TwinCli found no package.json above {{filePath}}"
   packageFieldMissing: "The file {{packageFile}} has no {{fieldName}}"
-  docSentenceMissing: "The doc {{filePath}} has no first sentence"
   valueTaken: "The value {{valueName}} of {{textId}} comes from loadCli"
   help: |-
     {{packageDescription}}
@@ -43,7 +43,7 @@ texts:
     Docs:
     {{#each docsList}}
       {{filePath}}
-        {{firstSentence}}
+        {{description}}
     {{/each}}
 
     Report a problem at {{bugsUrl}}
@@ -52,8 +52,6 @@ texts:
   optionMissing: "The command {{commandName}} needs --{{optionName}}"
   commandError: "{{packageName}}: {{errorText}}"
 ---
-The `TwinCli` class fills the texts of the command line of a package
-
 ## `TwinCli.loadCli()`
 
 ### Syntax
@@ -84,7 +82,6 @@ The function throws an `Error` with 1 of these texts
 | `cliSchemaMissing` | The `$schema` of `cliSpec` is not `twinspec/cli.schema.json` |
 | `packageMissing` | No folder above `cliSpec.filePath` has a `package.json` |
 | `packageFieldMissing` | The `package.json` has no `name` or `description` or `version` or URL of `bugs` |
-| `docSentenceMissing` | A doc has no first sentence |
 
 The function also throws the errors of [`TwinSpec.loadSpec`](../lib/spec.md#twinspecloadspec) for each doc
 
@@ -104,7 +101,7 @@ The function also throws the errors of [`TwinSpec.loadSpec`](../lib/spec.md#twin
 
 - When the client is twinspec `docsList` holds each doc 1 time
 - The path of each doc in `docsList` is relative to the current folder
-- The first sentence of a doc is the first line of its `bodyText`
+- The help shows the `description` of each doc
 - When 2 docs have the same name the shorter path comes first
 - The URL of `bugs` can be a string or the key `url` of an object
 - The function reads each file only 1 time

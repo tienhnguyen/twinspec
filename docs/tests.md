@@ -1,8 +1,7 @@
 ---
 title: Tests
+description: "Read this before you write a test"
 ---
-Read this before you write a test
-
 ## Test files
 
 ```js

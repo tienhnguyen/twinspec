@@ -33,7 +33,6 @@ export class CliTest {
     test(CliTest.#cliSpec.formatText('testPackageMissing'), CliTest.#testPackageMissing)
     test(CliTest.#cliSpec.formatText('testPackageFieldMissing'), CliTest.#testPackageFieldMissing)
     test(CliTest.#cliSpec.formatText('testBugsString'), CliTest.#testBugsString)
-    test(CliTest.#cliSpec.formatText('testDocSentenceMissing'), CliTest.#testDocSentenceMissing)
     test(CliTest.#cliSpec.formatText('testValueTaken'), CliTest.#testValueTaken)
     test(CliTest.#cliSpec.formatText('testTextIds'), CliTest.#testTextIds)
     after(CliTest.#removeTempFolder)
@@ -56,8 +55,8 @@ export class CliTest {
 
   static #testClientDocs () {
     const cliFile = CliTest.#writeClient('client-docs', CliTest.#samplePackage, {
-      'aaa.md': '---\ntitle: Aaa\n---\nRead this before you test aaa\n',
-      'zzz.md': '---\ntitle: Zzz\n---\nRead this before you test zzz\n'
+      'aaa.md': '---\ntitle: Aaa\ndescription: Read this before you test aaa\n---\n',
+      'zzz.md': '---\ntitle: Zzz\ndescription: Read this before you test zzz\n---\n'
     })
     const docLines = CliTest.#listDocLines(TwinCli.loadCli(TwinSpec.loadSpec(cliFile)).formatText('help'))
     assert.ok(docLines.at(0).endsWith('aaa.md'))
@@ -91,20 +90,20 @@ export class CliTest {
 
   static #testBrokenCommand () {
     const filePath = join(CliTest.#tempFolder, 'broken-command.md')
-    writeFileSync(filePath, `---\n$schema: ${CliTest.#schemaFile}\ntitle: Broken command\ncommands:\n  audit: {}\n---\n`)
+    writeFileSync(filePath, `---\n$schema: ${CliTest.#schemaFile}\ntitle: Broken command\ndescription: A command line with a broken command\ncommands:\n  audit: {}\n---\n`)
     assert.throws(() => TwinSpec.loadSpec(filePath), thrownError => thrownError.message.includes('/commands/audit') && thrownError.message.includes("must have required property 'description'"))
   }
 
   static #testCliSchemaMissing () {
     const filePath = join(CliTest.#tempFolder, 'no-schema.md')
-    writeFileSync(filePath, '---\ntitle: No schema\n---\n')
+    writeFileSync(filePath, '---\ntitle: No schema\ndescription: A command line with no schema\n---\n')
     assert.throws(() => TwinCli.loadCli(TwinSpec.loadSpec(filePath)), CliTest.#matchError('cliSchemaMissing', { filePath }))
   }
 
   static #testPackageMissing () {
     const filePath = join(CliTest.#tempFolder, 'no-package', 'cli.md')
     mkdirSync(join(CliTest.#tempFolder, 'no-package'))
-    writeFileSync(filePath, `---\n$schema: ${CliTest.#schemaFile}\ntitle: No package\ncommands:\n  build:\n    description: Build the package\n---\n`)
+    writeFileSync(filePath, `---\n$schema: ${CliTest.#schemaFile}\ntitle: No package\ndescription: A command line with no package\ncommands:\n  build:\n    description: Build the package\n---\n`)
     assert.throws(() => TwinCli.loadCli(TwinSpec.loadSpec(filePath)), CliTest.#matchError('packageMissing', { filePath }))
   }
 
@@ -117,12 +116,6 @@ export class CliTest {
   static #testBugsString () {
     const cliFile = CliTest.#writeClient('bugs-string', { ...CliTest.#samplePackage, bugs: 'https://example.com/bugs' }, {})
     assert.ok(TwinCli.loadCli(TwinSpec.loadSpec(cliFile)).formatText('help').endsWith('https://example.com/bugs'))
-  }
-
-  static #testDocSentenceMissing () {
-    const cliFile = CliTest.#writeClient('empty-doc', CliTest.#samplePackage, { 'empty.md': '---\ntitle: Empty\n---\n' })
-    const filePath = join(CliTest.#tempFolder, 'empty-doc', 'docs', 'empty.md')
-    assert.throws(() => TwinCli.loadCli(TwinSpec.loadSpec(cliFile)), CliTest.#matchError('docSentenceMissing', { filePath }))
   }
 
   static #testValueTaken () {
@@ -148,7 +141,7 @@ export class CliTest {
     const clientFolder = join(CliTest.#tempFolder, folderName)
     mkdirSync(join(clientFolder, 'bin'), { recursive: true })
     writeFileSync(join(clientFolder, 'package.json'), JSON.stringify(packageInfo))
-    writeFileSync(join(clientFolder, 'bin', 'cli.md'), `---\n$schema: ${CliTest.#schemaFile}\ntitle: Client\ncommands:\n  build:\n    description: Build the package\n---\n`)
+    writeFileSync(join(clientFolder, 'bin', 'cli.md'), `---\n$schema: ${CliTest.#schemaFile}\ntitle: Client\ndescription: The command line of a client\ncommands:\n  build:\n    description: Build the package\n---\n`)
     if (Object.keys(docTexts).length) mkdirSync(join(clientFolder, 'docs'))
     Object.entries(docTexts).forEach(([fileName, fileText]) => writeFileSync(join(clientFolder, 'docs', fileName), fileText))
     return join(clientFolder, 'bin', 'cli.md')

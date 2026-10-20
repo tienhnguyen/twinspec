@@ -1,8 +1,7 @@
 ---
 title: Packages
+description: "Read this before you add or publish a package"
 ---
-Read this before you add or publish a package
-
 ## Dependencies
 
 - Add packages with `npm i`

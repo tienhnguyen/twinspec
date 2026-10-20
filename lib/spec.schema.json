@@ -3,7 +3,7 @@
   "title": "Twinspec front matter",
   "description": "The front matter of each twin spec",
   "type": "object",
-  "required": ["title"],
+  "required": ["title", "description"],
   "properties": {
     "$schema": {
       "description": "The path of another JSON Schema that also tests the front matter",
@@ -11,6 +11,11 @@
     },
     "title": {
       "description": "The name of the file that people see",
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "description": {
+      "description": "The summary of the file that people see",
       "type": "string",
       "pattern": "\\S"
     },

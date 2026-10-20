@@ -1,5 +1,6 @@
 ---
 title: Spec test
+description: "The `SpecTest` class tests `lib/spec.js`"
 texts:
   testCallerFile: "loadSpec reads the twin spec of the caller file"
   testMetaUrl: "loadSpec reads the twin spec from import.meta.url"
@@ -11,6 +12,7 @@ texts:
   testYamlInvalid: "loadSpec throws yamlInvalid for a YAML error"
   testYamlWarning: "loadSpec throws yamlInvalid for a YAML warning"
   testSchemaBroken: "loadSpec throws schemaBroken when the title is missing"
+  testDescriptionMissing: "loadSpec throws schemaBroken when the description is missing"
   testSpaceTitle: "loadSpec throws schemaBroken when the title is only spaces"
   testSchemaPlace: "loadSpec shows the place of the bad key in schemaBroken"
   testSchemaFile: "loadSpec tests the front matter with the $schema file"
@@ -35,4 +37,3 @@ texts:
   nestedList: "{{#each folder.files}}{{this}}{{/each}}"
   fileCount: "{{^manyFlag}}1 file{{/manyFlag}}"
 ---
-The `SpecTest` class tests `lib/spec.js`

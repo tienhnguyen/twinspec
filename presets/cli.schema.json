@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Twinspec command line",
+  "description": "The front matter of the spec of a command line",
+  "type": "object",
+  "required": ["commands"],
+  "properties": {
+    "commands": {
+      "description": "The commands of the command line by name",
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description"],
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "description": "What the command does",
+            "type": "string"
+          },
+          "inputSchema": {
+            "description": "The options of the command as JSON Schema",
+            "type": "object",
+            "required": ["type", "properties"],
+            "properties": {
+              "type": { "const": "object" },
+              "properties": {
+                "type": "object",
+                "additionalProperties": {
+                  "description": "1 option of the command",
+                  "type": "object",
+                  "required": ["type", "description"],
+                  "properties": {
+                    "type": {
+                      "description": "The 2 types that parseArgs of Node reads",
+                      "enum": ["string", "boolean"]
+                    },
+                    "title": {
+                      "description": "The name of the value in the help",
+                      "type": "string"
+                    },
+                    "description": {
+                      "description": "What the option does",
+                      "type": "string"
+                    }
+                  },
+                  "if": {
+                    "type": "object",
+                    "properties": { "type": { "const": "string" } }
+                  },
+                  "then": {
+                    "type": "object",
+                    "required": ["title"],
+                    "properties": { "title": { "type": "string" } }
+                  }
+                }
+              },
+              "required": {
+                "description": "The options that the command needs",
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "examples": {
+            "description": "The sample calls of the command",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["args", "description"],
+              "properties": {
+                "args": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

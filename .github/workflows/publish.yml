@@ -1,0 +1,21 @@
+name: Publish
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: npm install --omit=dev
+      - run: npm test
+      - run: '[ "$(npm view . version)" = "$(node -p "require(\"./package.json\").version")" ] || npm publish'

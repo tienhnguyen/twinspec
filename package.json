@@ -1,0 +1,29 @@
+{
+  "name": "twinspec",
+  "version": "0.1.0",
+  "description": "Keep the texts of each code file in a twin Markdown spec",
+  "bugs": {
+    "url": "https://github.com/tienhnguyen/twinspec/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tienhnguyen/twinspec.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./lib/spec.js",
+    "./*": "./presets/*"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "handlebars": "^4.7.10",
+    "yaml": "^2.9.1"
+  },
+  "engines": {
+    "node": ">=20.10"
+  }
+}

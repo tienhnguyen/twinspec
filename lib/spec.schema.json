@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Twinspec front matter",
+  "description": "The front matter of every twin spec file",
+  "type": "object",
+  "required": ["title"],
+  "properties": {
+    "$schema": {
+      "description": "The path of another JSON Schema that also tests the front matter",
+      "type": "string"
+    },
+    "title": {
+      "description": "The name of the file that people see",
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "texts": {
+      "description": "The Handlebars texts for formatText",
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

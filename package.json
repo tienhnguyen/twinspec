@@ -1,6 +1,6 @@
 {
   "name": "twinspec",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Keep the texts of each code file in a twin Markdown spec",
   "bugs": {
     "url": "https://github.com/tienhnguyen/twinspec/issues"

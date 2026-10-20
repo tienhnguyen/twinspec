@@ -19,22 +19,22 @@ export class SpecTest {
     test(SpecTest.#twinSpec.formatText('testBomFile'), SpecTest.#testBomFile)
     test(SpecTest.#twinSpec.formatText('testCrlfFile'), SpecTest.#testCrlfFile)
     test(SpecTest.#twinSpec.formatText('testCallerMissing'), SpecTest.#testCallerMissing)
-    test(SpecTest.#twinSpec.formatText('testMissingFile'), SpecTest.#testMissingFile)
-    test(SpecTest.#twinSpec.formatText('testPlainFile'), SpecTest.#testPlainFile)
-    test(SpecTest.#twinSpec.formatText('testYamlError'), SpecTest.#testYamlError)
+    test(SpecTest.#twinSpec.formatText('testFileMissing'), SpecTest.#testFileMissing)
+    test(SpecTest.#twinSpec.formatText('testFrontMatterMissing'), SpecTest.#testFrontMatterMissing)
+    test(SpecTest.#twinSpec.formatText('testYamlInvalid'), SpecTest.#testYamlInvalid)
     test(SpecTest.#twinSpec.formatText('testYamlWarning'), SpecTest.#testYamlWarning)
-    test(SpecTest.#twinSpec.formatText('testBaseSchema'), SpecTest.#testBaseSchema)
+    test(SpecTest.#twinSpec.formatText('testSchemaBroken'), SpecTest.#testSchemaBroken)
     test(SpecTest.#twinSpec.formatText('testSpaceTitle'), SpecTest.#testSpaceTitle)
     test(SpecTest.#twinSpec.formatText('testSchemaPlace'), SpecTest.#testSchemaPlace)
     test(SpecTest.#twinSpec.formatText('testSchemaFile'), SpecTest.#testSchemaFile)
-    test(SpecTest.#twinSpec.formatText('testLostSchema'), SpecTest.#testLostSchema)
-    test(SpecTest.#twinSpec.formatText('testBrokenSchema'), SpecTest.#testBrokenSchema)
+    test(SpecTest.#twinSpec.formatText('testSchemaMissing'), SpecTest.#testSchemaMissing)
+    test(SpecTest.#twinSpec.formatText('testSchemaInvalid'), SpecTest.#testSchemaInvalid)
     test(SpecTest.#twinSpec.formatText('testLooseSchema'), SpecTest.#testLooseSchema)
-    test(SpecTest.#twinSpec.formatText('testOpenBlock'), SpecTest.#testOpenBlock)
+    test(SpecTest.#twinSpec.formatText('testTextInvalid'), SpecTest.#testTextInvalid)
     test(SpecTest.#twinSpec.formatText('testFilledText'), SpecTest.#testFilledText)
     test(SpecTest.#twinSpec.formatText('testHtmlValue'), SpecTest.#testHtmlValue)
-    test(SpecTest.#twinSpec.formatText('testMissingValue'), SpecTest.#testMissingValue)
-    test(SpecTest.#twinSpec.formatText('testUnknownText'), SpecTest.#testUnknownText)
+    test(SpecTest.#twinSpec.formatText('testTextError'), SpecTest.#testTextError)
+    test(SpecTest.#twinSpec.formatText('testTextMissing'), SpecTest.#testTextMissing)
     test(SpecTest.#twinSpec.formatText('testObjectLoop'), SpecTest.#testObjectLoop)
     test(SpecTest.#twinSpec.formatText('testMissingList'), SpecTest.#testMissingList)
     test(SpecTest.#twinSpec.formatText('testNestedList'), SpecTest.#testNestedList)
@@ -67,17 +67,17 @@ export class SpecTest {
     return assert.rejects(Promise.resolve().then(TwinSpec.loadSpec), SpecTest.#matchError('callerMissing'))
   }
 
-  static #testMissingFile () {
+  static #testFileMissing () {
     const filePath = join(SpecTest.#tempFolder, 'missing.md')
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('fileMissing', { filePath }))
   }
 
-  static #testPlainFile () {
+  static #testFrontMatterMissing () {
     const filePath = SpecTest.#writeSpec('plain.md', '# Plain\n')
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('frontMatterMissing', { filePath }))
   }
 
-  static #testYamlError () {
+  static #testYamlInvalid () {
     const filePath = SpecTest.#writeSpec('yaml-error.md', '---\ntitle: [open\n---\n')
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('yamlInvalid', { filePath, errorText: '' }))
   }
@@ -87,19 +87,19 @@ export class SpecTest {
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('yamlInvalid', { filePath, errorText: '' }))
   }
 
-  static #testBaseSchema () {
+  static #testSchemaBroken () {
     const filePath = SpecTest.#writeSpec('no-title.md', '---\ntexts: {}\n---\n')
-    assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaBroken', { filePath, schemaFile: SpecTest.#baseSchemaFile, schemaProblems: '' }))
+    assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaBroken', { filePath, schemaFile: SpecTest.#baseSchemaFile, keyPath: '/', problemText: '' }))
   }
 
   static #testSpaceTitle () {
     const filePath = SpecTest.#writeSpec('space-title.md', '---\ntitle: "  "\n---\n')
-    assert.throws(() => TwinSpec.loadSpec(filePath), thrownError => thrownError.message.includes('/title must match pattern'))
+    assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaBroken', { filePath, schemaFile: SpecTest.#baseSchemaFile, keyPath: '/title', problemText: '' }))
   }
 
   static #testSchemaPlace () {
     const filePath = SpecTest.#writeSpec('number-text.md', '---\ntitle: Number text\ntexts:\n  countText: 1\n---\n')
-    assert.throws(() => TwinSpec.loadSpec(filePath), thrownError => thrownError.message.includes('/texts/countText must be string'))
+    assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaBroken', { filePath, schemaFile: SpecTest.#baseSchemaFile, keyPath: '/texts/countText', problemText: '' }))
   }
 
   static #testSchemaFile () {
@@ -107,15 +107,15 @@ export class SpecTest {
     const goodFile = SpecTest.#writeSpec('good-command.md', '---\n$schema: ./command.schema.json\ntitle: Good\ncommands: {}\n---\n')
     const badFile = SpecTest.#writeSpec('bad-command.md', '---\n$schema: ./command.schema.json\ntitle: Bad\n---\n')
     assert.deepEqual(TwinSpec.loadSpec(goodFile).frontMatter.commands, {})
-    assert.throws(() => TwinSpec.loadSpec(badFile), SpecTest.#matchError('schemaBroken', { filePath: badFile, schemaFile, schemaProblems: '' }))
+    assert.throws(() => TwinSpec.loadSpec(badFile), SpecTest.#matchError('schemaBroken', { filePath: badFile, schemaFile, keyPath: '/', problemText: '' }))
   }
 
-  static #testLostSchema () {
+  static #testSchemaMissing () {
     const filePath = SpecTest.#writeSpec('lost-schema.md', '---\n$schema: ./lost.schema.json\ntitle: Lost\n---\n')
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaMissing', { schemaName: './lost.schema.json', filePath }))
   }
 
-  static #testBrokenSchema () {
+  static #testSchemaInvalid () {
     const schemaFile = SpecTest.#writeSpec('broken.schema.json', '{ "type": 5 }')
     const filePath = SpecTest.#writeSpec('broken-schema.md', '---\n$schema: ./broken.schema.json\ntitle: Broken\n---\n')
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaInvalid', { schemaFile, errorText: '' }))
@@ -127,7 +127,7 @@ export class SpecTest {
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('schemaInvalid', { schemaFile, errorText: '' }))
   }
 
-  static #testOpenBlock () {
+  static #testTextInvalid () {
     const filePath = SpecTest.#writeSpec('open-block.md', '---\ntitle: Open block\ntexts:\n  openBlock: "{{#each items}}"\n---\n')
     assert.throws(() => TwinSpec.loadSpec(filePath), SpecTest.#matchError('textInvalid', { textId: 'openBlock', filePath, errorText: '' }))
   }
@@ -140,11 +140,11 @@ export class SpecTest {
     assert.equal(SpecTest.#twinSpec.formatText('emptyFolder', { folderPath: '<b>' }), 'The folder <b> is empty')
   }
 
-  static #testMissingValue () {
+  static #testTextError () {
     assert.throws(() => SpecTest.#twinSpec.formatText('emptyFolder'), SpecTest.#matchError('textError', { textId: 'emptyFolder', filePath: SpecTest.#twinSpec.filePath, errorText: '' }))
   }
 
-  static #testUnknownText () {
+  static #testTextMissing () {
     assert.throws(() => SpecTest.#twinSpec.formatText('unknownText'), SpecTest.#matchError('textMissing', { textId: 'unknownText', filePath: SpecTest.#twinSpec.filePath }))
   }
 

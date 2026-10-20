@@ -7,7 +7,7 @@ Read this before you write a text for a person
 
 | Write | Not |
 |---|---|
-| `The --library flag is missing` | `No --library, pass the path of a library folder.` |
+| `The option --library is missing` | `No --library, pass the path of a library folder.` |
 | `The check made 2 findings` | `Checked 2 items.` |
 
 - Write 1 idea in 1 sentence
@@ -41,6 +41,7 @@ Read this before you write a text for a person
 | test as a verb | check as a verb |
 | 1 | one |
 
+- Write each text in English
 - Use common words that a learner of English knows
 - Use 1 word for 1 thing
 - Repeat the noun when `it` or `this` can be unclear
@@ -63,6 +64,7 @@ Read this before you write a text for a person
 ## Errors
 
 - Write an error in 1 sentence on 1 line
+- Write 1 line for each problem when an error has many problems
 - Say what is wrong so that the reader knows the next step
 - Put the details in `--help` or the docs or the schemas
 

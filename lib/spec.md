@@ -4,9 +4,7 @@ texts:
   fileMissing: "The file {{filePath}} is missing"
   callerMissing: "TwinSpec found no caller file in the stack"
   frontMatterMissing: "The file {{filePath}} has no front matter"
-  schemaBroken: |-
-    The front matter of {{filePath}} breaks {{schemaFile}}
-    {{schemaProblems}}
+  schemaBroken: "The front matter of {{filePath}} breaks {{schemaFile}} at {{keyPath}}: {{problemText}}"
   schemaMissing: "The $schema {{schemaName}} of {{filePath}} is missing"
   textMissing: "There is no text {{textId}} in {{filePath}}"
   textError: "The text {{textId}} of {{filePath}} has an error: {{errorText}}"
@@ -28,7 +26,8 @@ TwinSpec.loadSpec(specPath)
 ### Parameters
 
 - `specPath` (optional)
-  - The path of a `.md` or `.js` file or a `file://` URL
+  - The path of the twin spec or of its code file
+  - A `file://` URL also works
   - Without `specPath` the function reads the twin spec of the caller file
 
 ### Return value
@@ -59,7 +58,7 @@ The function throws an `Error` with 1 of these texts
 
 ### Description
 
-1. Find the caller file when `specPath` is empty
+1. Find the caller file when there is no `specPath`
 2. Change the extension `.js` or `.mjs` or `.cjs` to `.md`
 3. Read the file
 4. Remove the BOM
@@ -75,7 +74,7 @@ The function throws an `Error` with 1 of these texts
 - The function tests the front matter with `ajv`
 - The function uses JSON Schema draft 2020-12
 - The function compiles each JSON Schema in the strict mode of `ajv`
-- The text `schemaBroken` shows the place of each bad key
+- The error has 1 line of `schemaBroken` for each bad key
 - The function prints nothing
 
 ### Examples
@@ -91,11 +90,12 @@ Audit the files of a library folder
 ```
 
 ```js
-// tools/audit.js
-const toolSpec = TwinSpec.loadSpec()
-toolSpec.frontMatter.title   // 'Audit tool'
-toolSpec.bodyText            // 'Audit the files of a library folder'
-toolSpec.filePath            // '/abs/path/tools/audit.md'
+// in the class AuditTool of tools/audit.js
+static #toolSpec = TwinSpec.loadSpec()
+
+AuditTool.#toolSpec.frontMatter.title   // 'Audit tool'
+AuditTool.#toolSpec.bodyText            // 'Audit the files of a library folder'
+AuditTool.#toolSpec.filePath            // '/abs/path/tools/audit.md'
 ```
 
 ## `formatText()`
@@ -103,8 +103,8 @@ toolSpec.filePath            // '/abs/path/tools/audit.md'
 ### Syntax
 
 ```js
-twinSpec.formatText(textId)
-twinSpec.formatText(textId, textValues)
+AuditTool.#toolSpec.formatText(textId)
+AuditTool.#toolSpec.formatText(textId, textValues)
 ```
 
 ### Parameters
@@ -137,18 +137,15 @@ The function throws an `Error` with 1 of these texts
 - The function runs Handlebars with the option `strict`
 - The function runs Handlebars with the option `noEscape`
 - The option `noEscape` keeps the HTML in the values as it is
-
-| Syntax | When `name` is missing |
-|---|---|
-| `{{name}}` | The function throws `textError` |
-| `{{#name}}` or `{{^name}}` | The function throws `textError` |
-| `{{#each name.key}}` | The function throws `textError` |
-| `{{#each name}}` or `{{#if name}}` | The block renders nothing |
+- If `{{name}}` has no value then the function throws `textError`
+- If `{{#name}}` or `{{^name}}` has no value then the function throws `textError`
+- If `{{#each name.key}}` has no `name` then the function throws `textError`
+- If `{{#each name}}` or `{{#if name}}` has no value then the block renders nothing
 
 ### Examples
 
 ```js
-toolSpec.formatText('emptyFolder', { folderPath: './lib' })   // 'The folder ./lib is empty'
-toolSpec.formatText('emptyFolder', { folderPath: '<b>' })     // 'The folder <b> is empty'
-toolSpec.formatText('emptyFolder')                            // throws textError
+AuditTool.#toolSpec.formatText('emptyFolder', { folderPath: './lib' })   // 'The folder ./lib is empty'
+AuditTool.#toolSpec.formatText('emptyFolder', { folderPath: '<b>' })     // 'The folder <b> is empty'
+AuditTool.#toolSpec.formatText('emptyFolder')                            // throws textError
 ```

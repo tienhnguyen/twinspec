@@ -65,7 +65,7 @@ TwinCli.loadCli(cliSpec)
 ### Parameters
 
 - `cliSpec`
-  - The result of `TwinSpec.loadSpec()` for the spec of the command line
+  - The result of `TwinSpec.loadSpec()` for the twin spec of the command line
 
 ### Return value
 
@@ -102,10 +102,8 @@ The function also throws the errors of [`TwinSpec.loadSpec`](../lib/spec.md#twin
 10. Sort the docs from a to z by the name of the file
 11. Return `formatText`
 
-- The help always lists the docs of twinspec
-- The help lists the docs of the client only when the client has `docs/`
-- When the client is twinspec the help lists each doc 1 time
-- The path of each doc is relative to the current folder
+- When the client is twinspec `docsList` holds each doc 1 time
+- The path of each doc in `docsList` is relative to the current folder
 - The first sentence of a doc is the first line of its `bodyText`
 - When 2 docs have the same name the shorter path comes first
 - The URL of `bugs` can be a string or the key `url` of an object
@@ -115,9 +113,11 @@ The function also throws the errors of [`TwinSpec.loadSpec`](../lib/spec.md#twin
 ### Examples
 
 ```js
-// bin/cli.js
-const cliSpec = TwinSpec.loadSpec()
-const cliTexts = TwinCli.loadCli(cliSpec)
+// bin/cli.js of the package my-tool
+export class MyCli {
+  static #cliSpec = TwinSpec.loadSpec()
+  static #cliTexts = TwinCli.loadCli(MyCli.#cliSpec)   // { formatText }
+}
 ```
 
 ## `formatText()`
@@ -125,8 +125,8 @@ const cliTexts = TwinCli.loadCli(cliSpec)
 ### Syntax
 
 ```js
-cliTexts.formatText(textId)
-cliTexts.formatText(textId, textValues)
+MyCli.#cliTexts.formatText(textId)
+MyCli.#cliTexts.formatText(textId, textValues)
 ```
 
 ### Parameters
@@ -161,12 +161,10 @@ The function also throws the errors of [`formatText`](../lib/spec.md#formattext)
 | `commandError` | `packageName` | `errorText` | A step fails |
 
 - The help shows `[args...]` for a command without `inputSchema`
-- The help shows `<title>` after an option with a `title`
-- The file `test/cli.test.js` is a full sample of a client
 
 ### Examples
 
 ```js
-cliTexts.formatText('version')                                 // 'my-tool 1.0.0'
-cliTexts.formatText('unknownCommand', { commandName: 'oops' })  // 'The command oops is unknown'
+MyCli.#cliTexts.formatText('version')                                 // 'my-tool 1.0.0'
+MyCli.#cliTexts.formatText('unknownCommand', { commandName: 'oops' })  // 'The command oops is unknown'
 ```

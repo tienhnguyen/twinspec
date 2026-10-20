@@ -5,23 +5,22 @@ Read this before you write a Markdown file
 
 ## Files of a project
 
-| File | Content | Reader |
-|---|---|---|
-| `README.md` | The first page of the project | A user of the project |
-| `CONTRIBUTING.md` | The rules of this project only | A maintainer of the project |
-| A doc in `docs/` | A set of rules that many projects share | A maintainer of any project |
-| A twin spec | The spec of 1 code file | A reader of that code file |
+| File | Content | Reader | Page type | First sentence |
+|---|---|---|---|---|
+| `README.md` | The first page of the project | A user of the project | README | The description of the package |
+| `CONTRIBUTING.md` | The rules of this project only | A maintainer of the project | Conceptual | What the file holds |
+| A doc in `docs/` | A set of rules that many projects share | A maintainer of any project | Conceptual | `Read this before you {task}` |
+| A twin spec | The spec of 1 code file | A reader of that code file | Reference | What the thing does |
 
-- Put a rule of 1 project in the `CONTRIBUTING.md` of that project
-- Put a rule that many projects share in a doc in `docs/`
 - Write each fact in only 1 place
 - Link to the place of a fact instead of a copy
-- The description of a package is the only fact with 3 copies
-  - The `description` of `package.json`
-  - The line after the title of `README.md`
-  - The description of the repo on GitHub
-- Standard Readme needs these copies
-- When the description changes change each copy
+- Standard Readme needs these copies of facts
+  - The `description` of `package.json` in `README.md`
+  - The `description` of `package.json` on the GitHub repo
+  - The license of `LICENSE` in `README.md`
+  - The `bugs` URL of `package.json` in `README.md`
+- These copies are the only copies
+- When the source of a copy changes change each copy
 
 ## Reading flow
 
@@ -35,7 +34,6 @@ README.md → CONTRIBUTING.md → docs/*.md → twin specs
 - A doc links to the twin specs that the doc talks about
 - When you add a doc add its link to `CONTRIBUTING.md`
 - When you move a file update each link to that file
-- When a fact changes change the fact only in its 1 place
 
 ## Front matter
 
@@ -49,41 +47,18 @@ title: {Title}
 ```
 
 - Each `.md` file starts with front matter between 2 lines of `---`
-- The front matter has a `title`
-- The `title` is the `#` line of the file
+- [`lib/spec.schema.json`](../lib/spec.schema.json) describes each key of the front matter
+- The `title` of the front matter is the `#` line of the file
 - So the body has no `#` line
 - The headings of the body start at `##`
-- `README.md` has no front matter
-- `CONTRIBUTING.md` has no front matter
-- These 2 files start with a `#` line
+- `README.md` starts with a `#` line instead of front matter
+- `CONTRIBUTING.md` starts with a `#` line instead of front matter
 
 ## First sentence
 
-| File | First sentence |
-|---|---|
-| A twin spec | What the thing does |
-| A doc in `docs/` | `Read this before you {task}` |
-| `README.md` | The description of the package |
-| `CONTRIBUTING.md` | What the file holds |
-
 - The first sentence helps a reader see if the file is useful
-- The help of `TwinCli` prints the first sentence of each doc
+- The help of [`TwinCli`](../presets/cli.md) prints the first sentence of each doc
 - So the first sentence of a doc has no backticks
-
-## Page types
-
-| File | Page type |
-|---|---|
-| The twin spec of a code file | Reference |
-| A preset | Reference |
-| A doc in `docs/` | Conceptual |
-| `README.md` | Conceptual |
-| `CONTRIBUTING.md` | Conceptual |
-
-- A reference page has 1 `##` section for each function that a reader calls
-- A conceptual page has 1 `##` section for each topic
-- A twin spec with no function for a reader has only the first sentence
-- For example the twin spec of a test has only the first sentence
 
 ## Reference page
 
@@ -103,6 +78,9 @@ title: {Title}
 ### Examples
 ```
 
+- A reference page has 1 `##` section for each function that a reader calls
+- A twin spec with no function for a reader has only the first sentence
+- For example the twin spec of a test has only the first sentence
 - Write the 6 sections in this order
 - Write `None` in a section that has nothing
 - Put a code block with each form of the call in `Syntax`
@@ -114,7 +92,6 @@ title: {Title}
 - Put the steps in the order of the code in `Description`
 - Put the rules after the steps in `Description`
 - Put code with the result in a comment in `Examples`
-- Link to another file when a section has the same content as that file
 
 ## Rules
 
@@ -131,10 +108,11 @@ title: {Title}
 
 ## Conceptual page
 
-- Put the main code or table at the top of each section
+- A conceptual page has 1 `##` section for each topic
 - Put `## See also` at the end of the file
 - Link there to the official page of each standard
 - Link there to the official page of each tool
+- Link to a file of the project in the body
 
 ## README
 
@@ -156,8 +134,6 @@ title: {Title}
 - The title is the name of the package
 - Write only the 4 sections above
 - Add `### CLI` in `## Usage` when the package has a command line
-- So `README.md` ends with `## License`
-- So `README.md` has no `## See also`
 - Keep `README.md` under 100 lines
 - So `README.md` needs no table of contents
 

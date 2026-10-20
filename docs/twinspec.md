@@ -32,35 +32,33 @@ export class AuditTool {
 - Write the twin spec as a reference page of [`markdown.md`](markdown.md#reference-page)
 - Name each error in the `Exceptions` table by its text id
 - Read [`lib/spec.md`](../lib/spec.md) for the functions of twinspec
-- Browser code cannot use twinspec because twinspec reads files with `node:fs`
-- So the texts of browser code stay in the code
+- Read [`markdown.md`](markdown.md#front-matter) for the front matter
+- Twinspec reads files with `node:fs`
+- So browser code keeps its texts in the code
 
 ## Texts
 
 ```yaml
 texts:
-  emptyFolder: "The folder {{folderPath}} is empty"
   fileCount: "The folder has {{fileCount}} {{#singularFlag}}file{{/singularFlag}}{{^singularFlag}}files{{/singularFlag}}"
 ```
 
 - Put each text that a person reads under `texts` of the twin spec
 - Keep in code only the id of each text
 - A value like `yes` is not a text
-- Write each text in English
-- Write each text in Handlebars
+- Write each text with the rules of [`writing.md`](writing.md)
 - Write a text of 1 line between double quotes
 - Write a text of 2 or more lines as a YAML block with `|-`
 - Never write `\n` in a YAML text
 - List the texts in the order that the code first uses them
 - A code search finds an id only when the id is a plain string
 - So call `formatText` with the id as a plain string
-- Pass each value of a text in `textValues`
-- Pass the front matter as values when a text needs it for example `{ ...toolSpec.frontMatter, folderPath }`
+- Pass the front matter as values when a text needs it for example `{ ...AuditTool.#toolSpec.frontMatter, folderPath }`
 - Handlebars has no plural helper
 - So give the text a boolean like `singularFlag`
 - Use the block `{{#name}}` or `{{^name}}` for a boolean
-- These 2 blocks stop `formatText` when the value is missing
 - Use `{{#if name}}` only for a value that can be missing
+- Read [`formatText`](../lib/spec.md#formattext) for each block without its value
 
 ## Data
 
@@ -84,18 +82,17 @@ folderLimit: 10
 ```
 
 - Put the data of the code in the front matter of the twin spec
-- Test the data with a JSON Schema in `$schema`
+- Give the data its own JSON Schema
 - Put the rules of the data in the `description` of the JSON Schema
-- The function `loadSpec` compiles the JSON Schema in the strict mode of `ajv`
-- So give each keyword its `type` for example `type: object` for `properties`
-- So give each value only 1 type
-- So set `minItems` of a tuple to the count of `prefixItems`
-- So set `maxItems` of a tuple to the count of `prefixItems`
-- So list each key of `required` in `properties` at the same level
+- Follow the strict mode of `ajv` that [`loadSpec`](../lib/spec.md#description) uses
+  - Give each keyword its `type` for example `type: object` for `properties`
+  - Give each value only 1 type
+  - Set `minItems` of a tuple to the count of `prefixItems`
+  - Set `maxItems` of a tuple to the count of `prefixItems`
+  - List each key of `required` in `properties` at the same level
 
 ## See also
 
-- [`lib/spec.md`](../lib/spec.md) explains the functions of twinspec
 - [Handlebars](https://handlebarsjs.com/guide/) explains the syntax of the texts
 - [Handlebars built-in helpers](https://handlebarsjs.com/guide/builtin-helpers.html) lists the 6 helpers of Handlebars
 - [JSON Schema](https://json-schema.org/) explains the schema of a front matter

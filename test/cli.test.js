@@ -31,9 +31,9 @@ export class CliTest {
     test(CliTest.#cliSpec.formatText('testBrokenCommand'), CliTest.#testBrokenCommand)
     test(CliTest.#cliSpec.formatText('testCliSchemaMissing'), CliTest.#testCliSchemaMissing)
     test(CliTest.#cliSpec.formatText('testPackageMissing'), CliTest.#testPackageMissing)
-    test(CliTest.#cliSpec.formatText('testPackageField'), CliTest.#testPackageField)
+    test(CliTest.#cliSpec.formatText('testPackageFieldMissing'), CliTest.#testPackageFieldMissing)
     test(CliTest.#cliSpec.formatText('testBugsString'), CliTest.#testBugsString)
-    test(CliTest.#cliSpec.formatText('testDocSentence'), CliTest.#testDocSentence)
+    test(CliTest.#cliSpec.formatText('testDocSentenceMissing'), CliTest.#testDocSentenceMissing)
     test(CliTest.#cliSpec.formatText('testValueTaken'), CliTest.#testValueTaken)
     test(CliTest.#cliSpec.formatText('testTextIds'), CliTest.#testTextIds)
     after(CliTest.#removeTempFolder)
@@ -92,7 +92,7 @@ export class CliTest {
   static #testBrokenCommand () {
     const filePath = join(CliTest.#tempFolder, 'broken-command.md')
     writeFileSync(filePath, `---\n$schema: ${CliTest.#schemaFile}\ntitle: Broken command\ncommands:\n  audit: {}\n---\n`)
-    assert.throws(() => TwinSpec.loadSpec(filePath), thrownError => thrownError.message.includes("/commands/audit must have required property 'description'"))
+    assert.throws(() => TwinSpec.loadSpec(filePath), thrownError => thrownError.message.includes('/commands/audit') && thrownError.message.includes("must have required property 'description'"))
   }
 
   static #testCliSchemaMissing () {
@@ -108,7 +108,7 @@ export class CliTest {
     assert.throws(() => TwinCli.loadCli(TwinSpec.loadSpec(filePath)), CliTest.#matchError('packageMissing', { filePath }))
   }
 
-  static #testPackageField () {
+  static #testPackageFieldMissing () {
     const cliFile = CliTest.#writeClient('no-version', { ...CliTest.#samplePackage, version: '' }, {})
     const packageFile = join(CliTest.#tempFolder, 'no-version', 'package.json')
     assert.throws(() => TwinCli.loadCli(TwinSpec.loadSpec(cliFile)), CliTest.#matchError('packageFieldMissing', { packageFile, fieldName: 'version' }))
@@ -119,7 +119,7 @@ export class CliTest {
     assert.ok(TwinCli.loadCli(TwinSpec.loadSpec(cliFile)).formatText('help').endsWith('https://example.com/bugs'))
   }
 
-  static #testDocSentence () {
+  static #testDocSentenceMissing () {
     const cliFile = CliTest.#writeClient('empty-doc', CliTest.#samplePackage, { 'empty.md': '---\ntitle: Empty\n---\n' })
     const filePath = join(CliTest.#tempFolder, 'empty-doc', 'docs', 'empty.md')
     assert.throws(() => TwinCli.loadCli(TwinSpec.loadSpec(cliFile)), CliTest.#matchError('docSentenceMissing', { filePath }))

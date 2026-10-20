@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Twinspec front matter",
-  "description": "The front matter of every twin spec file",
+  "description": "The front matter of each twin spec",
   "type": "object",
   "required": ["title"],
   "properties": {

@@ -29,17 +29,15 @@ npm test
 ## Own texts
 
 - `lib/spec.js` loads its twin spec with `TwinSpec.loadSpec(import.meta.url)`
-- The caller search of `loadSpec` skips `lib/spec.js`
-- So this call needs the path
+- Read [`lib/spec.md`](lib/spec.md#description) for why this call needs the path
 - This call is the last field of `TwinSpec`
 - The fields above it must exist before the call
-- `presets/cli.js` loads `presets/cli.md` with the same call
 
 ## Costly mistakes
 
 - A stricter rule of twinspec can break the twin specs of the users
-- For example a stricter `lib/spec.schema.json` breaks old front matter
-- A stricter option of `ajv` or Handlebars can break old specs too
+- For example a stricter `lib/spec.schema.json` breaks the front matter of old twin specs
+- A stricter option of `ajv` or Handlebars can break old twin specs too
 - Such a change needs a new version from [`docs/packages.md`](docs/packages.md#versions)
 
 ## See also

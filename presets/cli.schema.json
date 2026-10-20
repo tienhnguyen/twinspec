@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Twinspec command line",
-  "description": "The front matter of the spec of a command line",
+  "description": "The front matter of the twin spec of a command line",
   "type": "object",
   "required": ["commands"],
   "properties": {

@@ -12,6 +12,7 @@ npm i twinspec
 
 ```md
 ---
+# tools/greet.md
 title: Greet
 texts:
   welcomeUser: "Welcome {{userName}}"
@@ -20,7 +21,7 @@ Greet a user
 ```
 
 ```js
-// lib/greet.js
+// tools/greet.js
 import { TwinSpec } from 'twinspec'
 
 export class GreetTool {
@@ -35,9 +36,6 @@ export class GreetTool {
 ```js
 GreetTool.formatWelcome('Ana')   // 'Welcome Ana'
 ```
-
-- The first file is `lib/greet.md`
-- The function `loadSpec` reads `lib/greet.md` because the caller is `lib/greet.js`
 
 ## Contributing
 

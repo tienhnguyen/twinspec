@@ -32,9 +32,9 @@ texts:
   testBrokenCommand: "cli.schema.json stops a command without a description"
   testCliSchemaMissing: "loadCli throws cliSchemaMissing when the spec has no $schema"
   testPackageMissing: "loadCli throws packageMissing when no folder has a package.json"
-  testPackageField: "loadCli throws packageFieldMissing when package.json has no version"
+  testPackageFieldMissing: "loadCli throws packageFieldMissing when package.json has no version"
   testBugsString: "loadCli reads the URL of bugs from a string"
-  testDocSentence: "loadCli throws docSentenceMissing for a doc with no first sentence"
+  testDocSentenceMissing: "loadCli throws docSentenceMissing for a doc with no first sentence"
   testValueTaken: "formatText throws valueTaken for a value from loadCli"
   testTextIds: "presets/cli.js uses only the texts of presets/cli.md"
   expectedHelp: |-
@@ -63,4 +63,4 @@ texts:
       --version
         Show the version
 ---
-This sample client spec tests the preset `twinspec/cli`
+The `CliTest` class tests the preset `twinspec/cli`

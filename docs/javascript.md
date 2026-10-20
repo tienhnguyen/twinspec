@@ -7,19 +7,20 @@ Read this before you write a JavaScript file
 
 ```
 bin/        the code of the command line
-lib/        the code that other packages import
+lib/        the main code that other packages import
 docs/       the docs of the package
 {kind}/     the files of 1 kind for example presets/ or test/ or tools/
 ```
 
 - Keep in the root only the files that a tool needs
 - Put the code of the command line in `bin/`
-- Put the other code that other packages import in `lib/`
+- Put the main code that other packages import in `lib/`
 - Give each other folder the name of the kind of its files
 
 ## Files
 
 ```
+bin/cli.js           MyCli        the command line of a package with the prefix My
 lib/spec.js          TwinSpec     a class that other packages import
 presets/cli.js       TwinCli      a class that other packages import
 test/spec.test.js    SpecTest     another class
@@ -27,14 +28,15 @@ tools/audit.js       AuditTool    another class
 ```
 
 - Put the code of each file in 1 class
+- Keep the names of files that a platform or a tool sets
+- For example `functions/index.js` of a Firebase app keeps its name
+- The file `functions/index.js` has no class
 - Export the class with `export class`
 - Name each file with the id of its thing
 - Name a class that other packages import `{Prefix}{Id}`
 - The `{Prefix}` is the short name of the package for example `Twin` of twinspec
+- Name the class of `bin/cli.js` `{Prefix}Cli`
 - Name each other class `{Id}{Kind}`
-- Keep the names of files that a platform or a tool sets
-- For example `functions/index.js` of a Firebase app keeps its name
-- The file `functions/index.js` also has no class
 
 ## Order
 
